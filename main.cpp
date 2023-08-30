@@ -105,3 +105,24 @@ void handlerBTN1ISR()
   portEXIT_CRITICAL_ISR(&mux);
 }
 
+
+void setup()
+{
+  Serial.begin(115200);
+
+  while (!Serial)
+    ;
+  pinMode(pinADC, INPUT);
+  pinMode(btn1.PIN, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(btn1.PIN), handlerBTN1ISR, FALLING);
+  configurarPWM(); // Configurar PWM para LEDs RGB
+  configurarServoPWM();
+  configurarDisplay7();
+
+  pinMode(Display1, OUTPUT);
+  pinMode(Display2, OUTPUT);
+  pinMode(Display3, OUTPUT);
+
+  digitalWrite(Display1, LOW);
+  digitalWrite(Display2, LOW);
+  digitalWrite(Display3, LOW);
