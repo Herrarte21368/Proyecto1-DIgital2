@@ -91,3 +91,17 @@ void configurarDisplay7(void);
 void desplegar7seg(int digito);
 void desplayPunto(boolean punto);
 
+// interrupcion
+void handlerBTN1ISR()
+{
+  portENTER_CRITICAL_ISR(&mux);
+  button_time = xTaskGetTickCount();
+  if (button_time - last_button_time > 250)
+  {
+    btn1.numberKeyPresses++;
+    btn1.pressed = true;
+    last_button_time = button_time;
+  }
+  portEXIT_CRITICAL_ISR(&mux);
+}
+
