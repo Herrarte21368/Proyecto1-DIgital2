@@ -63,3 +63,31 @@ bool punto = 0;
 #define COLD_TEMP 0
 #define HOT_TEMP 38
 
+// Definir los pines del display
+#define pinA 32
+#define pinB 33
+#define pinC 25
+#define pinD 26
+#define pinE 27
+#define pinF 13
+#define pinG 12
+#define pindP
+
+#define Display1 23
+#define Display2 22
+#define Display3 21
+
+// Declaracion de las funciones globales
+void promedio(void);
+void mediaMovil(void);
+void filtroEMA(void);
+float convertToTemperature(float adcValue);
+void configurarPWM(void);
+void actualizarLEDsRGB(float temperatura);
+void handlerBTN1ISR();
+int mapServoPosition(float temperatura);
+void configurarServoPWM(void);
+void configurarDisplay7(void);
+void desplegar7seg(int digito);
+void desplayPunto(boolean punto);
+
