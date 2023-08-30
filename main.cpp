@@ -109,9 +109,7 @@ void handlerBTN1ISR()
 void setup()
 {
   Serial.begin(115200);
-
-  while (!Serial)
-    ;
+  while (!Serial);
   pinMode(pinADC, INPUT);
   pinMode(btn1.PIN, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(btn1.PIN), handlerBTN1ISR, FALLING);
@@ -126,3 +124,22 @@ void setup()
   digitalWrite(Display1, LOW);
   digitalWrite(Display2, LOW);
   digitalWrite(Display3, LOW);
+
+ // while(! Serial);
+
+  //Serial.print("Connecting to Adafruit IO");
+
+  // connect to io.adafruit.com
+  //io.connect();
+
+  // wait for a connection
+ // while (io.status() < AIO_CONNECTED)
+  //{
+    //Serial.print(".");
+    //delay(500);
+  //}
+
+  // we are connected
+  //Serial.println();
+  //Serial.println(io.statusText());
+}
