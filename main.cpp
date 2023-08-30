@@ -43,3 +43,23 @@ int decenas = 0;
 int unidades = 0;
 int decimal = 0;
 bool punto = 0;
+
+// Parámetros de PWM para LEDs RGB
+#define pwmChannel 0
+#define pwmChannelR 4
+#define pwmChannelG 5
+#define pwmChannelB 6
+#define freqPWM_RGB 5000
+#define resolution_PWM 8
+#define pinLedR 19
+#define pinLedG 18
+#define pinLedB 5
+#define pinServo 17
+#define freqServo 50
+#define resolucionServo 16
+#define servoMin 1500 // valor minimo de ciclo de trabajo
+#define servoMax 8000 // valor maximo de cilo de trabajo
+
+#define COLD_TEMP 0
+#define HOT_TEMP 38
+
