@@ -143,3 +143,70 @@ void setup()
   //Serial.println();
   //Serial.println(io.statusText());
 }
+
+void loop()
+{
+  adcRaw = analogRead(pinADC); // Leer el valor crudo del ADC
+  promedio();                  // Realizar el cálculo del promedio
+  mediaMovil();                // Realizar el cálculo del promedio móvil
+
+  portENTER_CRITICAL_ISR(&mux);
+  if (btn1.pressed)
+  {                                               // Si el botón ha sido presionado
+    float voltage = convertToTemperature(adcRaw); // Convertir ADC a Celsius
+    Serial.print(" Temperature: ");
+    Serial.print(voltage);
+    Serial.println(" °C");
+    btn1.pressed = false;
+
+    //configuracion para los valores asignados a cada display
+    temp = voltage * 10;
+    decenas = temp / 100;
+    temp = temp - (decenas * 100);
+    unidades = temp / 10;
+    temp = temp - (unidades * 10);
+    decimal = temp;
+    // Serial.print(btn1.pressed);
+
+    //Configuracion de Adafruit
+    /*io.run();
+    Serial.println("sending -> ");
+    Serial.print(voltage);
+    tempcanal->save(voltage);
+    delay(3000);*/
+
+    // Llamar a la función para actualizar los LEDs RGB según la temperatura
+    actualizarLEDsRGB(voltage);
+
+    // Controlar servomotor basado en la temperatura
+    int mappedPosition = mapServoPosition(voltage);
+    ledcWrite(pwmChannel, mappedPosition);
+
+    btn1.pressed = false;
+  }
+  
+  digito = decenas;
+  digitalWrite(Display1, HIGH);
+  digitalWrite(Display2, LOW);
+  digitalWrite(Display3, LOW);
+  desplegar7seg(decenas);
+  delay(5);
+
+  digito = unidades;
+  digitalWrite(Display1, LOW);
+  digitalWrite(Display2, HIGH);
+  digitalWrite(Display3, LOW);
+  desplegar7seg(unidades);
+  delay(5);
+
+  digito = decimal;
+  digitalWrite(Display1, LOW);
+  digitalWrite(Display2, LOW);
+  digitalWrite(Display3, HIGH);
+  desplegar7seg(decimal);
+  delay(5);
+
+  portEXIT_CRITICAL_ISR(&mux);
+
+  delay(100);
+}
