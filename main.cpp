@@ -210,3 +210,94 @@ void loop()
 
   delay(100);
 }
+
+
+// Funcion de ADC
+void promedio(void)
+{
+  int sumaLecturas = 0;
+  for (int k = 0; k < numLecturas; k++)
+  {
+    sumaLecturas += analogRead(pinADC);
+    delay(1);
+  }
+  promedioLecturas = sumaLecturas / numLecturas;
+}
+
+// Funcion de ADC
+void mediaMovil(void)
+{
+  adcRaw = analogReadMilliVolts(pinADC);
+}
+
+// convertir voltage a Celius
+float convertToTemperature(float adcValue)
+{
+
+  float voltage = adcValue / 10;
+  return voltage;
+}
+
+//PWm para los LEDs
+void configurarPWM(void)
+{
+  ledcSetup(pwmChannelR, freqPWM_RGB, resolution_PWM);
+  ledcSetup(pwmChannelG, freqPWM_RGB, resolution_PWM);
+  ledcSetup(pwmChannelB, freqPWM_RGB, resolution_PWM);
+
+  ledcAttachPin(pinLedR, pwmChannelR);
+  ledcAttachPin(pinLedG, pwmChannelG);
+  ledcAttachPin(pinLedB, pwmChannelB);
+}
+
+//conifiguracion del encendido y apagado de los leds dependiendo del valor de temperatura 
+void actualizarLEDsRGB(float temperatura)
+{
+  int r = 0, g = 0, b = 0;
+
+  if (temperatura <= 17)
+  {
+    // Color frío (azul)
+    b = 255;
+  }
+  else if (temperatura > 17 && temperatura <= 18)
+  {
+    // Verde encendido
+    g = 255;
+  }
+  else if (temperatura > 18)
+  {
+    // Rojo encendido
+    r = 255;
+  }
+
+  // Aplicar los valores de PWM a los pines correspondientes
+  ledcWrite(pwmChannelR, r);
+  ledcWrite(pwmChannelG, g);
+  ledcWrite(pwmChannelB, b);
+}
+
+//confuguración del PWM para el servomotor 
+void configurarServoPWM(void)
+{
+  ledcSetup(pwmChannel, freqServo, resolucionServo);
+  ledcAttachPin(pinServo, pwmChannel);
+}
+
+//posicionamiento del servomotor dependiendo del rango de temperatura 
+int mapServoPosition(float temperatura)
+{
+  if (temperatura < 17)
+  {
+    return map(135, 0, 180, servoMin, servoMax);
+  }
+  else if (temperatura > 17 && temperatura <= 18)
+  {
+    return map(90, 0, 180, servoMin, servoMax);
+  }
+  else
+  {
+    return map(45, 0, 180, servoMin, servoMax);
+  }
+}
+
